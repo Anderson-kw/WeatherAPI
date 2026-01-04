@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App Spring</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+        body {
+            background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover { transform: translateY(-5px); }
+
+        h1 { color: #333; margin-bottom: 1.5rem; font-size: 1.8rem; }
+
+        .input-group { display: flex; gap: 10px; margin-bottom: 20px; }
+
+        input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus { border-color: #74ebd5; }
+
+        button {
+            padding: 12px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        button:hover { background-color: #0056b3; }
+
+        /* Área de Resultado */
+        .result-card {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none; /* Começa escondido */
+            border-left: 5px solid #007bff;
+        }
+
+        .city-name { font-size: 1.2rem; color: #555; margin-bottom: 5px; }
+        .temp-display { font-size: 3rem; font-weight: bold; color: #333; margin: 10px 0; }
+        .desc-display { color: #666; font-style: italic; }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🌤️ Clima Agora</h1>
+        
+        <div class="input-group">
+            <input type="text" id="cityInput" placeholder="Digite a cidade (ex: Sao Paulo)">
+            <button onclick="buscarClima()">🔍</button>
+        </div>
+
+        <div id="resultado" class="result-card">
+            <h2 id="cidade" class="city-name">--</h2>
+            <div class="temp-display"><span id="temp">--</span>°C</div>
+            <p id="descricao" class="desc-display">--</p>
+        </div>
+    </div>
+
+    <script>
+        async function buscarClima() {
+            const cidadeInput = document.getElementById("cityInput");
+            const cidade = cidadeInput.value;
+            const btn = document.querySelector("button");
+
+            if (!cidade) {
+                alert("Por favor, digite o nome de uma cidade!");
+                return;
+            }
+
+            btn.innerText = "⏳";
+            btn.disabled = true;
+
+            try {
+                const resposta = await fetch(`/weather?city=${cidade}`);
+                
+                if (!resposta.ok) throw new Error("Cidade não encontrada ou erro na API");
+
+                const dados = await resposta.json();
+
+                document.getElementById("cidade").innerText = dados.resolvedAddress;
+                document.getElementById("descricao").innerText = dados.description;
+                
+                // Conversão Fahrenheit -> Celsius e formatação
+                const tempC = (dados.currentConditions.temp - 32) * 5 / 9;
+                document.getElementById("temp").innerText = tempC.toFixed(1);
+
+                document.getElementById("resultado").style.display = "block";
+
+            } catch (erro) {
+                alert("Erro ao buscar clima. Verifique o nome da cidade.");
+                console.error(erro);
+            } finally {
+
+                btn.innerText = "🔍";
+                btn.disabled = false;
+            }
+        }
+
+        document.getElementById("cityInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                buscarClima();
+            }
+        });
+    </script>
+
+</body>
+</html>
