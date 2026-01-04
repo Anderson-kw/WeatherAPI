@@ -1,15 +1,15 @@
-# Weather API Wrapper 🌦️
+# Weather API Wrapper
 
 Projeto desenvolvido seguindo o desafio do **[roadmap.sh](https://roadmap.sh/projects/weather-api-wrapper-service)**.
 
 O objetivo é criar uma API intermediária que busca dados de clima (Visual Crossing), armazena em **Cache** para economizar requisições e exibe em um Frontend simples.
 
-## 🛠 Tecnologias
+## Tecnologias
 * **Java / Spring Boot**
 * **Spring Cache** (Cache em memória)
 * **HTML/CSS/JS** (Frontend integrado)
 
-## ⚙️ Funcionalidades
+## Funcionalidades
 
 - Consulta de clima atual por cidade.
 - Integração com a API da Visual Crossing.
@@ -17,5 +17,5 @@ O objetivo é criar uma API intermediária que busca dados de clima (Visual Cros
 - Tratamento de dados JSON para Objetos Java (DTOs).
 - Interface gráfica simples e responsiva.
 
-## 🔗 Referência
+## Referência
 * Desafio original: [Weather API Wrapper Service](https://roadmap.sh/projects/weather-api-wrapper-service)
